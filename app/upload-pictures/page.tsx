@@ -17,6 +17,33 @@ export default function UploadPictures() {
     }
   };
 
+  const uploadFiles = async (images: any) => {
+    const files = new FormData();
+    if (images) {
+      console.log(images);
+      for (const image in images) {
+        files.append("files", images[image]);
+      }
+    }
+    console.log(files.getAll("files"));
+    try {
+      console.log("Uploading...");
+      const response = await fetch("http://52.141.27.205:8000/upload/", {
+        mode: "no-cors",
+        method: "POST",
+        headers: {},
+        body: files,
+      });
+      console.log("done", response);
+      if (response.ok) {
+        console.log("Uploaded");
+        console.log(response);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <main className="flex min-h-screen flex-col p-7">
       <Link href="/">
@@ -80,8 +107,12 @@ export default function UploadPictures() {
             </label>
           </div>
         </div>
-        <Button variant="default">
-          <Link href="/">Generate emotions</Link>
+        <Button
+          variant="default"
+          onClick={() => {
+            uploadFiles([image1, image2, image3]);
+          }}>
+          <span>Generate emotions</span>
         </Button>
       </div>
     </main>
