@@ -3,12 +3,13 @@ import { Button } from "@/components/ui/button";
 import { SkipBack } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function UploadPictures() {
   const [image1, setImage1] = useState<File | null>(null);
   const [image2, setImage2] = useState<File | null>(null);
   const [image3, setImage3] = useState<File | null>(null);
-
+  const router = useRouter();
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       return e.target.files[0];
@@ -20,24 +21,24 @@ export default function UploadPictures() {
   const uploadFiles = async (images: any) => {
     const files = new FormData();
     if (images) {
-      console.log(images);
       for (const image in images) {
-        files.append("files", images[image]);
+        if (images[image] !== null) {
+          files.append("files", images[image]);
+        }
       }
     }
-    console.log(files.getAll("files"));
     try {
       console.log("Uploading...");
+      console.log(files.getAll("files"));
       const response = await fetch("http://52.141.27.205:8000/upload/", {
-        mode: "no-cors",
         method: "POST",
         headers: {},
         body: files,
       });
-      console.log("done", response);
       if (response.ok) {
-        console.log("Uploaded");
-        console.log(response);
+        const data = await response.json();
+        console.log(data);
+        //router.push({ pathname: "/emotions", query: { emotions: data } });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -86,7 +87,7 @@ export default function UploadPictures() {
               ) : (
                 <span>2</span>
               )}
-            </label>{" "}
+            </label>
           </div>
           <div className="w-36 h-36 border rounded-md mb-4 flex flex-row justify-center items-center shadow-md">
             <input
@@ -109,6 +110,7 @@ export default function UploadPictures() {
         </div>
         <Button
           variant="default"
+          disabled={image1 === null && image2 === null && image3 === null}
           onClick={() => {
             uploadFiles([image1, image2, image3]);
           }}>
