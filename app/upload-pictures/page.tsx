@@ -29,7 +29,6 @@ export default function UploadPictures() {
     }
     try {
       console.log("Uploading...");
-      console.log(files.getAll("files"));
       const response = await fetch("http://52.141.27.205:8000/upload/", {
         method: "POST",
         headers: {},
@@ -37,7 +36,6 @@ export default function UploadPictures() {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         //router.push({ pathname: "/emotions", query: { emotions: data } });
       }
     } catch (error) {
