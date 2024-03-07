@@ -3,17 +3,47 @@ import { Button } from "@/components/ui/button";
 import { SkipBack } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 
 export default function UploadPictures() {
   const [image1, setImage1] = useState<File | null>(null);
   const [image2, setImage2] = useState<File | null>(null);
   const [image3, setImage3] = useState<File | null>(null);
-
+  const router = useRouter();
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       return e.target.files[0];
     } else {
       return null;
+    }
+  };
+
+  const uploadFiles = async (images: any) => {
+    const files = new FormData();
+    if (images) {
+      for (const image in images) {
+        if (images[image] !== null) {
+          files.append("files", images[image]);
+        }
+      }
+    }
+    try {
+      console.log("Uploading...");
+      const response = await fetch("http://52.141.27.205:8000/upload/", {
+        method: "POST",
+        headers: {},
+        body: files,
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log("data", data);
+        const encodedData = JSON.stringify(data);
+        router.push(`/select-emotions?emotions=${encodedData}`);
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
@@ -59,7 +89,7 @@ export default function UploadPictures() {
               ) : (
                 <span>2</span>
               )}
-            </label>{" "}
+            </label>
           </div>
           <div className="w-36 h-36 border rounded-md mb-4 flex flex-row justify-center items-center shadow-md">
             <input
@@ -80,8 +110,13 @@ export default function UploadPictures() {
             </label>
           </div>
         </div>
-        <Button variant="default">
-          <Link href="/">Generate emotions</Link>
+        <Button
+          variant="default"
+          disabled={image1 === null || image2 === null || image3 === null}
+          onClick={() => {
+            uploadFiles([image1, image2, image3]);
+          }}>
+          <span>Generate emotions</span>
         </Button>
       </div>
     </main>
