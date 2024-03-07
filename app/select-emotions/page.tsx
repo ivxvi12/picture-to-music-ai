@@ -2,8 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { SkipBack } from "lucide-react";
 import Link from "next/link";
-import { use, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 export default function SelectEmotions() {

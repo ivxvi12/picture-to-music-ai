@@ -4,8 +4,6 @@ import { SkipBack } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
-import { useParams } from "next/navigation";
 
 export default function UploadPictures() {
   const [image1, setImage1] = useState<File | null>(null);
@@ -38,7 +36,6 @@ export default function UploadPictures() {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log("data", data);
         const encodedData = JSON.stringify(data);
         router.push(`/select-emotions?emotions=${encodedData}`);
       }
