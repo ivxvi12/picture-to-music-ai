@@ -3,23 +3,12 @@ import { Button } from "@/components/ui/button";
 import { SkipBack } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function SelectEmotions() {
-  const emotions = [
-    "Happy",
-    "Sad",
-    "Angry",
-    "Surprised",
-    "Disgusted",
-    "Scared",
-    "Neutral",
-    "Calm",
-    "Confused",
-    "Excited",
-    "Tired",
-    "Bored",
-  ];
-
+  const searchParams = useSearchParams();
+  const encodedData = searchParams.get("emotions") || "";
+  const emotions = (JSON.parse(encodedData).results as string[]) || [];
   const [selectedEmotions, setSelectedEmotions] = useState<string[]>([]);
 
   return (
@@ -47,7 +36,7 @@ export default function SelectEmotions() {
           ))}
         </div>
         <Button variant="default">
-          <Link href="/">Generate music</Link>
+          <Link href="/play">Generate music</Link>
         </Button>
       </div>
     </main>
