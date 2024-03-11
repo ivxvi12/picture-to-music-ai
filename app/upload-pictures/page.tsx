@@ -20,10 +20,7 @@ export default function UploadPictures() {
   };
 
   const submit = async (images: any) => {
-    for (const image in images) {
-      const data = await API.postFormData("/upload/", images[image]);
-      console.log(data);
-    }
+    const data = await API.postFormData("/upload/", images[0]);
   };
 
   return (
