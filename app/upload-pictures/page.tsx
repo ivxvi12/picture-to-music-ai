@@ -20,7 +20,11 @@ export default function UploadPictures() {
   };
 
   const submit = async (images: any) => {
-    const data = await API.postFormData("/upload/", images[0]);
+    for (const image in images) {
+      console.log("trying to upload image...");
+      const data = await API.postFormData("/upload/", images[image]);
+      console.log("data", data);
+    }
   };
 
   return (
@@ -29,8 +33,16 @@ export default function UploadPictures() {
         <SkipBack size={24} className="text-black" />
       </Link>
       <div className="flex flex-col items-center">
-        <h1 className="text-4xl mt-32 mb-24">Upload 3 pictures...</h1>
-        <div className="flex flex-row items-center justify-center md:space-x-4 mb-12 px-2w-full">
+        <h1 className="text-4xl mt-24 mb-8">Upload 3 pictures...</h1>
+        <Button
+          variant="default"
+          disabled={image1 === null || image2 === null || image3 === null}
+          onClick={() => {
+            submit([image1, image2, image3]);
+          }}>
+          <span>Generate emotions</span>
+        </Button>
+        <div className="flex flex-row items-center justify-center md:space-x-4 mb-12 px-2w-full mt-10">
           <div className="mb-4 flex flex-col justify-center items-center mr-4">
             <div className="w-36 h-36 border-[0.5px] rounded-md mb-4 flex flex-col justify-center items-center shadow-md">
               <input
@@ -111,14 +123,6 @@ export default function UploadPictures() {
             </div>
           </div>
         </div>
-        <Button
-          variant="default"
-          disabled={image1 === null || image2 === null || image3 === null}
-          onClick={() => {
-            submit([image1, image2, image3]);
-          }}>
-          <span>Generate emotions</span>
-        </Button>
       </div>
     </main>
   );
