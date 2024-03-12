@@ -10,16 +10,17 @@ export default function SelectEmotions() {
   const encodedData = searchParams.get("emotions") || "";
   const emotions = JSON.parse(encodedData) as string[];
   const [selectedEmotions, setSelectedEmotions] = useState<string[]>([]);
-  console.log("encodedData", encodedData);
-  console.log("emotions", emotions);
   return (
     <main className="flex min-h-screen flex-col p-7">
       <Link href="/upload-pictures">
         <SkipBack size={24} className="text-black" />
       </Link>
       <div className="flex flex-col items-center">
-        <h1 className="text-4xl mt-32 mb-24">Select emotions...</h1>
-        <div className="flex flex-row flex-wrap items-center justify-center gap-6 mb-12 px-2">
+        <h1 className="text-4xl mt-32 mb-8">Select emotions...</h1>
+        <Button variant="default">
+          <Link href={`/play?emotions=${JSON.stringify(selectedEmotions)}`}>Generate music</Link>
+        </Button>
+        <div className="flex flex-row flex-wrap items-center justify-center gap-6 mb-12 px-2 mt-10">
           {emotions.map((emotion, index) =>
             emotion === "" ? null : (
               <Button
@@ -38,9 +39,6 @@ export default function SelectEmotions() {
             ),
           )}
         </div>
-        <Button variant="default">
-          <Link href="/play">Generate music</Link>
-        </Button>
       </div>
     </main>
   );

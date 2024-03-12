@@ -20,9 +20,10 @@ class api {
     }
   }
 
-  async post(path: String, data: any) {
+  async post(path: String, data: any, music: boolean = false) {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${path}`, {
+      const url = music ? process.env.NEXT_PUBLIC_API_URL_MUSIC : process.env.NEXT_PUBLIC_API_URL;
+      const response = await fetch(`${url}${path}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,7 +34,8 @@ class api {
         throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
       }
       const result = await response.json();
-      return result.results;
+      const status = response.ok;
+      return { status, result };
     } catch (error) {
       console.error("Error:", error);
       throw error;

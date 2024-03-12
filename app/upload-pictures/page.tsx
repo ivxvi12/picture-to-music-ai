@@ -38,10 +38,10 @@ export default function UploadPictures() {
           .start()
           .pauseFor(1000)
           .callFunction(async () => {
-            console.log("redirecting...");
-            const emotions_result = await emotions_promise;
-            console.log("emotions_result redirect", emotions_result);
-            router.push(`/select-emotions?emotions=${JSON.stringify(emotions_result)}`);
+            const { status, result } = await emotions_promise;
+            if (status) {
+              router.push(`/select-emotions?emotions=${JSON.stringify(result.results)}`);
+            }
           });
       } else {
         typeWritters[i].typeString(result).start();
@@ -135,13 +135,13 @@ export default function UploadPictures() {
           </div>
           <div className="mb-4 flex flex-col justify-center items-center">
             <div className="w-36 h-36 border rounded-md mb-4 flex flex-col justify-center items-center shadow-md">
-              <span id="label1" className="overflow-scroll max-h-36 p-2"></span>
+              <span id="label1" className=" overflow-auto max-h-36 p-2"></span>
             </div>
             <div className="w-36 h-36 border rounded-md mb-4 flex flex-row justify-center items-center shadow-md">
-              <span id="label2" className="overflow-scroll max-h-36 p-2"></span>
+              <span id="label2" className="overflow-auto max-h-36 p-2"></span>
             </div>
             <div className="w-36 h-36 border rounded-md mb-4 flex flex-row justify-center items-center shadow-md">
-              <span id="label3" className="overflow-scroll max-h-36 p-2"></span>
+              <span id="label3" className="overflow-auto max-h-36 p-2"></span>
             </div>
           </div>
         </div>
