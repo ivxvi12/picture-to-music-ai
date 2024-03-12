@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { SkipBack } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Typewriter from "typewriter-effect/dist/core";
 import API from "../service/api";

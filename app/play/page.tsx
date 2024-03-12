@@ -1,12 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Loader, Pause, Play, SkipBack } from "lucide-react";
+import { SkipBack } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import Player from "@madzadev/audio-player";
 import "@madzadev/audio-player/dist/index.css";
 import { useSearchParams } from "next/navigation";
-import { get } from "http";
 import { useRouter } from "next/navigation";
 import API from "../service/api";
 
