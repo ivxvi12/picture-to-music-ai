@@ -49,7 +49,7 @@ export default function UploadPictures() {
         <div className="flex flex-col mb-4 w-full items-center mt-10">
           <div className="flex flex-row py-6 rounded-md mb-6 w-full justify-center">
             {songs.length <= 0 ? (
-              <span className="text-xl">Loading...</span>
+              <span className="text-xl">Generating...</span>
             ) : (
               <Player trackList={songs} includeTags={false} includeSearch={false} />
             )}

@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { SkipBack } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Typewriter from "typewriter-effect/dist/core";
 import API from "../service/api";
@@ -11,7 +11,8 @@ export default function UploadPictures() {
   const [image1, setImage1] = useState<File | null>(null);
   const [image2, setImage2] = useState<File | null>(null);
   const [image3, setImage3] = useState<File | null>(null);
-
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const [submitLabel, setSubmitLabel] = useState("Generate emotions");
   const label1 = document.getElementById("label1");
   const label2 = document.getElementById("label2");
   const label3 = document.getElementById("label3");
@@ -26,7 +27,17 @@ export default function UploadPictures() {
     }
   };
 
+  useEffect(() => {
+    if (image1 && image2 && image3) {
+      setIsSubmitDisabled(false);
+    } else {
+      setIsSubmitDisabled(true);
+    }
+  }, [image1, image2, image3]);
+
   const submit = async (images: any) => {
+    setIsSubmitDisabled(true);
+    setSubmitLabel("Generating...");
     const data = { sentence: "" };
     for (let i = 0; i < images.length; i++) {
       const result = await API.postFormData("/upload/", images[i]);
@@ -58,11 +69,11 @@ export default function UploadPictures() {
         <h1 className="text-4xl mt-24 mb-8">Upload 3 pictures...</h1>
         <Button
           variant="default"
-          disabled={image1 === null || image2 === null || image3 === null}
+          disabled={isSubmitDisabled}
           onClick={() => {
             submit([image1, image2, image3]);
           }}>
-          <span>Generate emotions</span>
+          <span>{submitLabel}</span>
         </Button>
         <div className="flex flex-row items-center justify-center md:space-x-4 mb-12 px-2w-full mt-10">
           <div className="mb-4 flex flex-col justify-center items-center mr-8">
