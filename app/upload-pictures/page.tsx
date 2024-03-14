@@ -13,10 +13,6 @@ export default function UploadPictures() {
   const [image3, setImage3] = useState<File | null>(null);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const [submitLabel, setSubmitLabel] = useState("Generate emotions");
-  const label1 = document.getElementById("label1");
-  const label2 = document.getElementById("label2");
-  const label3 = document.getElementById("label3");
-  const typeWritters = [new Typewriter(label1), new Typewriter(label2), new Typewriter(label3)];
 
   const router = useRouter();
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +35,10 @@ export default function UploadPictures() {
     setIsSubmitDisabled(true);
     setSubmitLabel("Generating...");
     const data = { sentence: "" };
+    const label1 = document.getElementById("label1");
+    const label2 = document.getElementById("label2");
+    const label3 = document.getElementById("label3");
+    const typeWritters = [new Typewriter(label1), new Typewriter(label2), new Typewriter(label3)];
     for (let i = 0; i < images.length; i++) {
       const result = await API.postFormData("/upload/", images[i]);
       data.sentence += result;

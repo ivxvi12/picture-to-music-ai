@@ -18,11 +18,12 @@ export default function UploadPictures() {
   const router = useRouter();
 
   const fetchSongs = async () => {
-    const { status, result } = await API.post("/generate-music/", descriptions, true);
+    const { status, result } = await API.post("/generate-music/", descriptions);
     if (status) {
       const songArray = [] as { url: string; title: string; tags: string[] }[];
-      result.file_paths.forEach((element: string) => {
-        songArray.push({ url: `http://10.147.20.203:8000/music/${element}`, title: element, tags: [""] });
+      result.filepaths.forEach((element: string) => {
+        const song_title = element.split("/")[2];
+        songArray.push({ url: `${process.env.NEXT_PUBLIC_API_URL}${element}`, title: song_title, tags: [""] });
       });
       setSongs(songArray);
     }

@@ -20,10 +20,9 @@ class api {
     }
   }
 
-  async post(path: String, data: any, music: boolean = false) {
+  async post(path: String, data: any) {
     try {
-      const url = music ? process.env.NEXT_PUBLIC_API_URL_MUSIC : process.env.NEXT_PUBLIC_API_URL;
-      const response = await fetch(`${url}${path}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${path}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
