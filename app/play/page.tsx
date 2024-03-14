@@ -14,16 +14,25 @@ export default function UploadPictures() {
   const searchParams = useSearchParams();
   const encodedData = searchParams.get("emotions") || "";
   const emotions = JSON.parse(encodedData) as string[];
-  const descriptions = { descriptions: emotions };
+  const genre = ["genre: jazz", "genre: rock", "genre: ballad", "genre: edm", "genre: country", "genre: blues"]
+  const descriptions = { descriptions: [ 
+    genre[0] + " with guitar, bass, piano and drum  has emotions like " +emotions.join(" "), 
+    genre[1] + " with electric guitar, bass, piano and drum has emotions like " +emotions.join(" "),
+    genre[2] + " with only string and piano has emotions like " +emotions.join(" "),
+    genre[3] + " with electronic piano has emotions like " +emotions.join(" "),
+    genre[4] + " with acoustic guitar has emotions like " +emotions.join(" "),
+    genre[5] + " with guitar, bass, piano and drum has emotions like " +emotions.join(" ")
+  ]};
   const router = useRouter();
 
   const fetchSongs = async () => {
     const { status, result } = await API.post("/generate-music/", descriptions);
+    let i = 0;
     if (status) {
       const songArray = [] as { url: string; title: string; tags: string[] }[];
       result.filepaths.forEach((element: string) => {
-        const song_title = element.split("/")[2];
-        songArray.push({ url: `${process.env.NEXT_PUBLIC_API_URL}${element}`, title: song_title, tags: [""] });
+        songArray.push({ url: `${process.env.NEXT_PUBLIC_API_URL}${element}`, title: genre[i], tags: [""] });
+        i = i + 1;
       });
       setSongs(songArray);
     }
